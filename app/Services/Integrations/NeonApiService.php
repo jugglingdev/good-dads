@@ -3,6 +3,7 @@
 namespace App\Services\Integrations;
 
 use Illuminate\Support\Facades\Http;
+use Exception;
 
 class NeonApiService
 {
@@ -17,7 +18,7 @@ class NeonApiService
     }
 
     private function fetch(string $endpoint, array $fields = [], ?int $personId = null, bool $useWhereClause = true): array
-    {
+    {        
         $url = "{$this->baseUrl}/data/{$endpoint}";
 
         $params = [
@@ -44,9 +45,16 @@ class NeonApiService
         }
 
         $response = Http::get($url, $params);
-        $response->throw();
+        $toReturn = $response->json() ?? [];
 
-        return $response->json() ?? [];
+        $response
+            ->throw()
+            ->throwIf(
+                isset($toReturn['status']) && $toReturn['status'] == 'error',
+                fn() => new Exception($toReturn['errorMessage'], $toReturn['errorCode'] ?? 0)
+            );
+
+        return $toReturn;
     }
 
     public function getTodaysParticipants(): array
@@ -215,6 +223,7 @@ class NeonApiService
 
     public function buildFullParticipantRecord(int $personId): array
     {
+
         return [
             'contactInfo' => $this->fetchPersonContactInfo($personId, false),
             'children' => $this->fetchPersonChildren($personId, true),
