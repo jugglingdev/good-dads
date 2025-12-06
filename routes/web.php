@@ -4,7 +4,6 @@ use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\Intake\IntakeController;
 use App\Http\Controllers\LegalController;
-use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
@@ -54,10 +53,6 @@ Route::middleware(['auth'])->name('classes.')->group(function () {
 Route::middleware(['auth'])->name('reports.')->group(function () {
     Route::get('/reports', [ReportsController::class, 'list'])->name('list')->breadcrumb('Reports', 'home');
 });
-
-// Route::get('/pdf-fake', [PdfController::class, 'generateFake'])
-//     // ->middleware('auth')
-//     ->name('test.pdf');
 
 Route::get('/intake/{participantId}/pdf', [IntakeController::class, 'generatePdf']);
 
