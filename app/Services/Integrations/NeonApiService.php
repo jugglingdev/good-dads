@@ -45,16 +45,16 @@ class NeonApiService
         }
 
         $response = Http::get($url, $params);
-        $toReturn = $response->json() ?? [];
+        $responseData = $response->json() ?? [];
 
         $response
             ->throw()
             ->throwIf(
-                isset($toReturn['status']) && $toReturn['status'] == 'error',
-                fn() => new Exception($toReturn['errorMessage'], $toReturn['errorCode'] ?? 0)
+                isset($responseData['status']) && $responseData['status'] == 'error',
+                fn() => new Exception($responseData['errorMessage'], $responseData['errorCode'] ?? 0)
             );
 
-        return $toReturn;
+        return $responseData;
     }
 
     public function getTodaysParticipants(): array
