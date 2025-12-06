@@ -15,7 +15,6 @@ class ParticipantSignupStoreRequest extends FormRequest
         return request()->user()->hasRole('participant');
     }
 
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -52,7 +51,6 @@ class ParticipantSignupStoreRequest extends FormRequest
             'children_info.*.visitation' => ['required_with:children_info', 'boolean'],
             'children_info.*.phone_contact' => ['required_with:children_info', 'boolean'],
             'children_info.*.child_support' => ['required_with:children_info', 'numeric'],
-
 
         ];
     }

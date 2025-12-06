@@ -2,7 +2,7 @@
 
 namespace App\Concerns;
 
-use \BackedEnum as Enum;
+use BackedEnum as Enum;
 
 /**
  * @mixin Enum
@@ -26,9 +26,9 @@ trait EnumDisplayArray
 
     public static function displayArray(array $displayOnly = []): array
     {
-        $displayValues = sizeof($displayOnly) > 0 ? $displayOnly : self::cases();
+        $displayValues = count($displayOnly) > 0 ? $displayOnly : self::cases();
 
-        if (!method_exists(self::class, 'cases')) {
+        if (! method_exists(self::class, 'cases')) {
             return [];
         }
 

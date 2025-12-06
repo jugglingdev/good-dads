@@ -17,8 +17,8 @@ class AdminUserSeeder extends Seeder
             'first_name' => env('ADMIN_FIRST_NAME'),
             'last_name' => env('ADMIN_LAST_NAME'),
             'email' => env('ADMIN_EMAIL'),
-                'password' => bcrypt(env('ADMIN_PASSWORD')),
-            ]
+            'password' => bcrypt(env('ADMIN_PASSWORD')),
+        ]
         );
 
         $this->adminUser->assignRole('admin');

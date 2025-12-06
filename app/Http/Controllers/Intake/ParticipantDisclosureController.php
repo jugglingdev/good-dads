@@ -2,19 +2,9 @@
 
 namespace App\Http\Controllers\Intake;
 
-use App\Enums\Ethnicity;
-use App\Enums\MaritalStatus;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Intake\ParticipantSignupStoreRequest;
-use App\Models\User;
 use App\Services\ParticipantService;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -25,7 +15,7 @@ class ParticipantDisclosureController extends Controller
      */
     public function create(Request $request): Response
     {
-        return Inertia::render('Intake/Disclosure',[
+        return Inertia::render('Intake/Disclosure', [
             'participant' => $request->user()?->participant ?? [],
         ]);
     }
@@ -40,7 +30,4 @@ class ParticipantDisclosureController extends Controller
         // todo: implement
         return back();
     }
-
-
-
 }

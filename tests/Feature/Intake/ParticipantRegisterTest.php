@@ -47,7 +47,6 @@ class ParticipantRegisterTest extends TestCase
         $intakeResponse->assertStatus(200);
     }
 
-
     public function test_new_participants_can_register(): void
     {
         Event::fake();
@@ -60,15 +59,15 @@ class ParticipantRegisterTest extends TestCase
             'phone_number' => '1234567890',
             'password' => 'password',
             'password_confirmation' => 'password',
-            'terms' => true
+            'terms' => true,
         ]);
 
         // Ensure the new user has been assigned participant role
-         Event::assertDispatched(Registered::class, function($event){
-             return $event->user->hasRole('participant');
-         });
+        Event::assertDispatched(Registered::class, function ($event) {
+            return $event->user->hasRole('participant');
+        });
 
-         $this->assertModelExists(User::firstWhere('email', 'participant@example.com'));
+        $this->assertModelExists(User::firstWhere('email', 'participant@example.com'));
 
         $response->assertRedirect(route('intake.signup', absolute: false));
     }
@@ -84,11 +83,9 @@ class ParticipantRegisterTest extends TestCase
             'phone_number' => '1234567890',
             'password' => 'password',
             'password_confirmation' => 'password',
-            'terms' => false
+            'terms' => false,
         ]);
 
         $response->assertSessionHasErrors('terms');
     }
-
-
 }

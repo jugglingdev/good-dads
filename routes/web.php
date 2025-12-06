@@ -3,14 +3,11 @@
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\Intake\IntakeController;
-use App\Http\Controllers\Intake\ParticipantDisclosureController;
-use App\Http\Controllers\Intake\ParticipantRegistrationController;
-use App\Http\Controllers\Intake\ParticipantSignupController;
 use App\Http\Controllers\LegalController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
-use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -42,25 +39,6 @@ Route::middleware(['auth'])->name('users.')->group(function () {
     Route::get('/users/{user}', [UsersController::class, 'show'])->name('show')->breadcrumb(fn ($user) => "$user->first_name $user->last_name", 'users.list');
 });
 
-Route::name('intake')
-    ->prefix('intake')
-    ->group(function () {
-        Route::middleware(['role:intake'])->group(function () {
-            Route::get('/', [IntakeController::class, 'index'])->name('.index');
-            Route::get('register', [ParticipantRegistrationController::class, 'create'])->name('.register');
-            Route::post('register', [ParticipantRegistrationController::class, 'store']);
-        });
-
-        Route::middleware('role:participant')->group(function () {
-            Route::get('signup', [ParticipantSignupController::class, 'create'])->name('.signup');
-            Route::post('signup', [ParticipantSignupController::class, 'store']);
-        });
-
-        Route::middleware('role:participant')->group(function () {
-            Route::get('disclosure', [ParticipantDisclosureController::class, 'create'])->name('.disclosure');
-            Route::post('disclosure', [ParticipantDisclosureController::class, 'store']);
-        });
-    });
 Route::middleware(['auth'])->group(function () {
     Route::get('/curriculum', [UsersController::class, 'list'])->name('curriculum.list');
 });
@@ -76,13 +54,10 @@ Route::middleware(['auth'])->name('reports.')->group(function () {
     Route::get('/reports', [ReportsController::class, 'list'])->name('list')->breadcrumb('Reports', 'home');
 });
 
-
 // Route::get('/pdf-fake', [PdfController::class, 'generateFake'])
 //     // ->middleware('auth')
 //     ->name('test.pdf');
 
 Route::get('/intake/{participantId}/pdf', [IntakeController::class, 'generatePdf']);
-
-
 
 require __DIR__.'/auth.php';

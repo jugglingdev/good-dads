@@ -29,7 +29,7 @@ class ParticipantSignupTest extends TestCase
             'city' => 'Anytown',
             'state' => 'CA',
             'zipcode' => '12345',
-            'employer' =>'Example Company',
+            'employer' => 'Example Company',
             't_shirt_size' => 'L',
             'home_phone_number' => '123-456-7890',
             'work_phone_number' => '987-654-3210',
@@ -59,8 +59,8 @@ class ParticipantSignupTest extends TestCase
                     'visitation' => true,
                     'phone_contact' => true,
                     'child_support' => 50.00,
-                ]
-            ]
+                ],
+            ],
         ];
         $participantUser = User::factory()->create();
         $participantUser->assignRole('participant');
@@ -75,5 +75,4 @@ class ParticipantSignupTest extends TestCase
 
         $this->assertCount(2, $participant->children);
     }
-
 }

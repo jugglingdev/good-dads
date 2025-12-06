@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 class ParticipantStaffAssignment extends Model
 {
     use HasFactory;
-
     use HasUuids;
 
     protected $keyType = 'string';
@@ -54,6 +53,4 @@ class ParticipantStaffAssignment extends Model
     {
         return $this->belongsTo(User::class, 'participant_user_id');
     }
-
-
 }

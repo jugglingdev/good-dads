@@ -16,5 +16,4 @@ class UsPhoneNumber implements ValidationRule
             $fail('The :attribute must be a valid US phone number.');
         }
     }
-
 }
