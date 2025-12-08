@@ -47,14 +47,8 @@ class PollNeonParticipants extends Command
             // Build the full participant record
             $fullRecord = $this->neonApi->buildFullParticipantRecord($participantId);
 
-            // Create a hash of the full record
-            $hash = hash('sha256', json_encode($fullRecord));
 
-            // Check if hash already exists
-            if (!NeonHash::where('id', $hash)->exists()) {
-                NeonHash::create(['id' => $hash]);
                 dispatch(new GenerateParticipantPdfJob($participantId));
-            }
         }
 
         $this->info('Polling complete.');

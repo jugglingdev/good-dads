@@ -20,7 +20,6 @@ class GenerateParticipantPdfJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public int $participantId;
-    public string $hash;
     
     /**
      * Create a new job instance.
@@ -39,11 +38,18 @@ class GenerateParticipantPdfJob implements ShouldQueue
         PdfIntakeFormService $pdfService
     ) {
         try {
-            // Fetch and transform participant data
+            // Fetch and hash participant data
             $fullRecord = $neonApi->buildFullParticipantRecord($this->participantId);
-            $participant = $transformer->transformPerson($fullRecord);
+            
+            $hash = hash('sha256', json_encode($fullRecord, JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION));
+            $record = NeonHash::firstOrCreate(['id' => $hash]);
 
-            // Generate the PDF
+            if (!$record->wasRecentlyCreated) {
+                return;
+            }
+
+            // Transform data and generate PDF
+            $participant = $transformer->transformPerson($fullRecord);
             $pdfPath = $pdfService->generate($participant);
 
             // Send email
