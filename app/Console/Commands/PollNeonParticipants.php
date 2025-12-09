@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Services\Integrations\NeonApiService;
 use App\Jobs\GenerateParticipantPdfJob; 
-use App\Models\NeonHash;
 
 class PollNeonParticipants extends Command
 {
@@ -44,11 +43,7 @@ class PollNeonParticipants extends Command
         foreach ($participants as $person) {
             $participantId = (int) $person['persons_id']['value'];
 
-            // Build the full participant record
-            $fullRecord = $this->neonApi->buildFullParticipantRecord($participantId);
-
-
-                dispatch(new GenerateParticipantPdfJob($participantId));
+            dispatch(new GenerateParticipantPdfJob($participantId));
         }
 
         $this->info('Polling complete.');

@@ -7,13 +7,24 @@ use Carbon\Carbon;
 
 class NeonDataTransformer
 {
-    public function transformPerson(array $data): object {
+    public function transformPerson(array $data): array {
 
-        $transformedContactInfo = $this->transformContactInfo($data['contactInfo']['records'][0], $data['children']['records']);
-        $transformedDisclosure = $this->transformDisclosure($data['disclosure']['records'][0]);
-        $transformedFatherhoodAssessmentWorksheet = $this->transformFatherhoodAssessmentWorksheet($data['assessment']['records'][0]);
-        $transformedFatherhoodSurvey =$this->transformFatherhoodSurvey($data['survey']['records'][0]);
-        $transformedServicePlan = $this->transformServicePlan($data['servicePlan']['records'][0]);
+        $transformedContactInfo = $this->transformContactInfo(
+            $data['contactInfo']['records'][0], 
+            $data['children']['records']
+        );
+        $transformedDisclosure = $this->transformDisclosure(
+            $data['disclosure']['records'][0]
+        );
+        $transformedFatherhoodAssessmentWorksheet = $this->transformFatherhoodAssessmentWorksheet(
+            $data['assessment']['records'][0]
+        );
+        $transformedFatherhoodSurvey =$this->transformFatherhoodSurvey(
+            $data['survey']['records'][0]
+        );
+        $transformedServicePlan = $this->transformServicePlan(
+            $data['servicePlan']['records'][0]
+        );
 
         $transformedPerson = array_merge(
             $transformedContactInfo, 
@@ -23,10 +34,10 @@ class NeonDataTransformer
             $transformedServicePlan
         );
 
-        return (object) $transformedPerson;
+        return $transformedPerson;
     }
 
-    private function transformContactInfo(array $contactInfo, array $children) : array {
+    private function transformContactInfo(array $contactInfo, array $children): array {
 
         $transformedContactInfo = [];
 

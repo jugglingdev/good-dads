@@ -13,17 +13,18 @@ class IntakeFormMailable extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $participant;
-
-    public $pdfPath;
+    public array $participant;
+    public string $pdfContent;
+    public string $filename;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($participant, $pdfPath)
+    public function __construct(array $participant, string $pdfContent, string $filename)
     {
-        $this->participant = $participant;
-        $this->pdfPath = $pdfPath;
+        $this->participant  = $participant;
+        $this->pdfContent   = $pdfContent;
+        $this->filename     = $filename;
     }
 
     /**
@@ -56,8 +57,11 @@ class IntakeFormMailable extends Mailable
      */
     public function attachments(): array
     {
-        return [Attachment::fromStorage($this->pdfPath)
-            ->as('intake-form.pdf')
-            ->withMime('application/pdf')];
+        return [
+            Attachment::fromData(
+                fn () => $this->pdfContent,
+                $this->filename
+            )->withMime('application/pdf')
+        ];
     }
 }
