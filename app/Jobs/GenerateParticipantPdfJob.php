@@ -27,7 +27,6 @@ class GenerateParticipantPdfJob implements ShouldQueue
      */
     public function __construct(int $participantId)
     {
-        Log::info("Job constructed for participant {$participantId}");
         $this->participantId = $participantId;
     }
 
@@ -45,14 +44,16 @@ class GenerateParticipantPdfJob implements ShouldQueue
             // Fetch participant data
             $fullRecord = $neonApi->buildFullParticipantRecord($this->participantId);
 
-            // Hash the full record to check for duplicates
-            // $hash = hash('sha256', json_encode($fullRecord, JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION));
-            // $record = NeonHash::firstOrCreate(['id' => $hash]);
+            // Validate Neon record
 
-            // if (!$record->wasRecentlyCreated) {
-            //     Log::info("Participant PDF already exists for participant {$this->participantId}");
-            //     return;
-            // }
+            // Hash the full record to check for duplicates
+            $hash = hash('sha256', json_encode($fullRecord, JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION));
+            $record = NeonHash::firstOrCreate(['id' => $hash]);
+
+            if (!$record->wasRecentlyCreated) {
+                Log::info("Participant PDF already exists for participant {$this->participantId}");
+                return;
+            }
 
             // Transform data
             Log::info("Transforming participant data for participant {$this->participantId}");

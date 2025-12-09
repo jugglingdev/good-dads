@@ -9,7 +9,7 @@
 
     <p>Hello,</p>
 
-    <p>A new intake form has been generated for <strong>{{ $participant->full_name }}</strong>.</p>
+    <p>A new intake form has been generated for <strong>{{ $participant['full_name'] }}</strong>.</p>
 
     <p>
         The completed form is attached to this email.

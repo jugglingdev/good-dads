@@ -33,7 +33,7 @@ class IntakeFormMailable extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Intake Form for '.($this->participant->full_name ?? 'Participant')
+            subject: 'Intake Form for '.($this->participant['full_name'] ?? 'Participant')
         );
     }
 
